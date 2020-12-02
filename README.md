@@ -3,7 +3,8 @@
 本项目仅对 bilibli-helper 以及 docker 化的 docker-bilibili-helper 进行了简单的 Kubernetes 容器编排脚本编写，没有什么技术含量，仅方便大家能够快速的在 Kubernetes 中启动一个 bilibili-helper。如有需要后续可考虑提供 helm 版本。
 
 感谢原本作者及其项目：[BILIBILI-HELPER](https://github.com/JunzhouLiu/BILIBILI-HELPER)
-感谢Docker化作者及其项目：[docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)
+
+感谢 Docker 化作者及其项目：[docker-bilbili-helper](https://github.com/SuperNG6/docker-bilbili-helper)
 
 ## 使用方法
 
