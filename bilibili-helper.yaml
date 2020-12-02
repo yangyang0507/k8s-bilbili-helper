@@ -1,0 +1,86 @@
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: bilibili-helper
+  name: bilibili-helper
+spec:
+  selector:
+    app: bilibili-helper
+  type: ClusterIP
+  ports:
+    - name: http
+      protocol: TCP
+      port: 80
+      targetPort: 80
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: bilibili-helper
+  labels:
+    name: bilibili-helper
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: bilibili-helper
+  template:
+    metadata:
+      labels:
+        app: bilibili-helper
+    spec:
+      containers:
+        - image: superng6/bilbili-helper:latest
+          imagePullPolicy: Always
+          name: bilibili-helper
+          env:
+            - name: PUID
+              value: "0"
+            - name: PGID
+              value: "0"
+            - name: TZ
+              value: "Asia/Shanghai"
+            - name: TASK
+              value: "1d"
+            - name: DEDEUSERID
+              value: "YOUR_DEDEUSERID"
+            - name: SESSDATA
+              value: "YOUR_SESSDATA"
+            - name: BILI_JCT
+              value: "YOUR_BILI_JCT"
+            - name: SERVERPUSHKEY
+              value: "YOUR_SERVERPUSHKEY"
+            - name: CUSP
+              value: "true"
+            - name: CRON
+              value: "false"
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          volumeMounts:
+            - name: bilibili-helper-config
+              mountPath: /config/config.json
+              subPath: config.json
+      volumes:
+        - name: bilibili-helper-config
+          configMap:
+            name: bilibili-helper-config
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: bilibili-helper-config
+  labels:
+    app: bilibili-helper
+data:
+  config.json: |
+    {
+      "numberOfCoins": 5,
+      "selectLike": 0,
+      "monthEndAutoCharge": true,
+      "devicePlatform": "android",
+      "coinAddPriority": 1,
+      "userAgent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.0 Safari/605.1.15"
+    }
